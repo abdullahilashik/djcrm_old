@@ -6,6 +6,7 @@ from .models import Lead, Agent
 class LeadAdmin(admin.ModelAdmin):
     pass
 
+
 @admin.register(Agent)
 class AgentAdmin(admin.ModelAdmin):
     pass

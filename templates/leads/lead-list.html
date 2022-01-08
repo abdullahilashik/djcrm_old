@@ -15,6 +15,7 @@
             </div>
         </div>
         <div class="row clearfix">
+            <a class="badge badge-info pull-right" href="{% url 'leads:lead-create' %}">Create New Lead</a>
             <div class="col-lg-12 col-md-12">
                 <div class="card">
                     <div class="body project_report">
@@ -36,7 +37,9 @@
                                             <span class="badge badge-success">Active</span>
                                         </td>
                                         <td class="project-title">
-                                            <h6><a href="#">{{ lead.first_name }} {{ lead.last_name }}</a></h6>
+                                            <h6>
+                                                <a href="{% url 'leads:lead-details' lead.id %}">{{ lead.first_name }} {{ lead.last_name }}</a>
+                                            </h6>
                                             <small>Created 14.Mar.2018</small>
                                         </td>
                                         <td>
@@ -46,9 +49,14 @@
                                             {{ lead.agent }}
                                         </td>
                                         <td class="project-actions">
-                                            <a href="#" class="btn btn-neutral btn-sm"><i class="zmdi zmdi-eye"></i></a>
-                                            <a href="#" class="btn btn-neutral btn-sm"><i
+                                            <a href="{% url 'leads:lead-details' lead.id %}"
+                                               class="btn btn-neutral btn-sm"><i class="zmdi zmdi-eye"></i></a>
+                                            <a href="{% url 'leads:lead-update' lead.id %}"
+                                               class="btn btn-neutral btn-sm"><i
                                                     class="zmdi zmdi-edit"></i></a>
+                                            <a href="{% url 'leads:lead-delete' lead.id %}"
+                                               class="btn btn-neutral btn-sm"><i class="zmdi zmdi-delete"></i></a>
+
                                         </td>
                                     </tr>
                                 {% endfor %}
