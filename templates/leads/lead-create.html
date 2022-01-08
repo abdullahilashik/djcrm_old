@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block content %}
 
     <div class="container">
@@ -21,4 +21,8 @@
         </div>
     </div>
 
+{% endblock %}
+{% block stylesheet %}
+    <!-- Bootstrap Select Css -->
+    <link href="{% static 'assets/plugins/bootstrap-select/css/bootstrap-select.css' %}" rel="stylesheet"/>
 {% endblock %}

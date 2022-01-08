@@ -1,6 +1,6 @@
 from django.shortcuts import render, reverse
 from django.views import generic
-from .models import Lead
+from .models import Lead, Agent
 from .forms import LeadForm
 
 
@@ -20,6 +20,7 @@ class LeadDetails(generic.DetailView):
 class LeadCreate(generic.CreateView):
     template_name = 'leads/lead-create.html'
     form_class = LeadForm
+
     # queryset = Lead.objects.all()
     # context_object_name = 'lead'
 
@@ -42,4 +43,4 @@ class LeadDelete(generic.DeleteView):
     queryset = Lead.objects.all()
 
     def get_success_url(self):
-        return redirect('leads:lead-list')
+        return reverse('leads:lead-list')

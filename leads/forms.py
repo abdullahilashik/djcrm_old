@@ -16,3 +16,4 @@ class LeadForm(forms.ModelForm):
     )
     last_name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
     age = forms.IntegerField(widget=forms.NumberInput(attrs={'class': 'form-control'}))
+    agent = forms.ModelChoiceField(queryset=Agent.objects.all(), widget=forms.Select(attrs={'class': 'form-control'}))
