@@ -3,22 +3,23 @@ from django.views import generic
 from .models import Lead, Agent
 from .forms import LeadForm
 from django.contrib import messages
+from .mixins import OrganizationLoginRequiredMixin
 
 
-class LeadList(generic.ListView):
+class LeadList(OrganizationLoginRequiredMixin, generic.ListView):
     template_name = 'leads/lead-list.html'
     queryset = Lead.objects.all()
     context_object_name = 'leads'
     paginate_by = 10
 
 
-class LeadDetails(generic.DetailView):
+class LeadDetails(OrganizationLoginRequiredMixin, generic.DetailView):
     template_name = 'leads/lead-details.html'
     queryset = Lead.objects.all()
     context_object_name = 'lead'
 
 
-class LeadCreate(generic.CreateView):
+class LeadCreate(OrganizationLoginRequiredMixin, generic.CreateView):
     template_name = 'leads/lead-create.html'
     form_class = LeadForm
 
@@ -30,7 +31,7 @@ class LeadCreate(generic.CreateView):
         return reverse('leads:lead-list')
 
 
-class LeadUpdate(generic.UpdateView):
+class LeadUpdate(OrganizationLoginRequiredMixin, generic.UpdateView):
     template_name = 'leads/lead-update.html'
     queryset = Lead.objects.all()
     context_object_name = 'lead'
@@ -41,7 +42,7 @@ class LeadUpdate(generic.UpdateView):
         return reverse('leads:lead-list')
 
 
-class LeadDelete(generic.DeleteView):
+class LeadDelete(OrganizationLoginRequiredMixin, generic.DeleteView):
     template_name = 'leads/lead-delete.html'
     queryset = Lead.objects.all()
 

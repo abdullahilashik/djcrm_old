@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="container">
+        <div class="block-header">
+            <div class="row clearfix">
+                <div class="col-lg-5 col-md-5 col-sm-12">
+                    <h2>All Agents List</h2>
+                </div>
+                <div class="col-lg-7 col-md-7 col-sm-12">
+                    <ul class="breadcrumb float-md-right padding-0">
+                        <li class="breadcrumb-item"><a href="{% url 'home' %}"><i class="zmdi zmdi-home"></i></a></li>
+                        <li class="breadcrumb-item active">Lead List</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        {% if messages %}
+            <div class="row clearfix">
+                <div class="col-md-12">
+                    {% for message in messages %}
+                        {% if message.tags == 'error' %}
+                            <div class="alert alert-danger">{{ message }} {{ message.tags }}</div>
+                        {% elif message.tags == 'success' %}
+                            <div class="alert alert-success">{{ message }}</div>
+                        {% else %}
+                            <div class="alert alert-info">{{ message }}</div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+        <div class="row clearfix">
+            <a class="badge badge-info pull-right" href="{% url 'agents:agent-create' %}">Create New Agent</a>
+            <div class="col-lg-12 col-md-12">
+                <div class="card">
+                    <div class="body project_report">
+                        <div class="table-responsive">
+                            <table class="table m-b-0 table-hover">
+                                <thead>
+                                <tr>
+                                    <th>Status</th>
+                                    <th>Agents</th>
+                                    <th>Leads</th>
+                                    <th>User</th>
+                                    <th>User Profile</th>
+                                    <th>Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for agent in agents %}
+                                    <tr>
+                                        <td>
+                                            <span class="badge badge-success">Active</span>
+                                        </td>
+                                        <td class="project-title">
+                                            <h6>
+                                                <a href="{% url 'agents:agent-details' agent.id %}">{{ agent.user.username }}</a>
+                                            </h6>
+                                            <small>Created 14.Mar.2018</small>
+                                        </td>
+                                        <td>
+                                            {{ agent.lead_set.count }}
+                                        </td>
+                                        <td>{{ agent.user.username }}</td>
+                                        <td>
+                                            {{ agent.organization.user.username }}
+                                        </td>
+                                        <td class="project-actions">
+                                            <a href="{% url 'agents:agent-details' agent.id %}"
+                                               class="btn btn-neutral btn-sm"><i class="zmdi zmdi-eye"></i></a>
+                                            <a href="{% url 'agents:agent-update' agent.id %}"
+                                               class="btn btn-neutral btn-sm"><i
+                                                    class="zmdi zmdi-edit"></i></a>
+                                            <a href="{% url 'agents:agent-delete' agent.id %}"
+                                               class="btn btn-neutral btn-sm"><i class="zmdi zmdi-delete"></i></a>
+
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
