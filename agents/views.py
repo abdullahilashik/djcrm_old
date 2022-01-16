@@ -3,19 +3,26 @@ from django.views import generic
 from leads.models import Agent
 from .forms import AgentForm
 from django.contrib import messages
+from .mixins import OrganizationLoginRequiredMixin
 
-class AgentListView(generic.ListView):
+
+class AgentListView(OrganizationLoginRequiredMixin, generic.ListView):
     template_name = 'agents/agent-list.html'
     queryset = Agent.objects.all()
     context_object_name = 'agents'
 
+    # def get_queryset(self):
+    #     user = self.request.user
+    #     queryset = Agent.objects.filter(organization=user.userprofile)
+    #     return queryset
 
-class AgentDetailsView(generic.DetailView):
+
+class AgentDetailsView(OrganizationLoginRequiredMixin, generic.DetailView):
     template_name = 'agents/agent-details.html'
     queryset = Agent.objects.all()
 
 
-class AgentDeleteView(generic.DeleteView):
+class AgentDeleteView(OrganizationLoginRequiredMixin, generic.DeleteView):
     template_name = 'agents/agent-delete.html'
     queryset = Agent.objects.all()
 
@@ -24,7 +31,7 @@ class AgentDeleteView(generic.DeleteView):
         return reverse('agents:agent-list')
 
 
-class AgentCreateView(generic.CreateView):
+class AgentCreateView(OrganizationLoginRequiredMixin, generic.CreateView):
     template_name = 'agents/agent-create.html'
     queryset = Agent.objects.all()
     form_class = AgentForm
@@ -36,10 +43,15 @@ class AgentCreateView(generic.CreateView):
         return reverse('agents:agent-list')
 
     def form_valid(self, form):
-        agent = form.save(commit=False)
-        agent.organization = self.request.user.userprofile
-        agent.save()
-        # messages.success(self.request, 'New agent has been created!')
+        user = form.save(commit=False)
+        user.is_agent = True
+        user.is_organization = False
+        user.set_password('agent')
+        user.save()
+        Agent.objects.create(
+            user=user,
+            organization=user.userprofile
+        )
         return super(AgentCreateView, self).form_valid(form)
 
 

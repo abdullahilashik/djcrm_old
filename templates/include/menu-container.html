@@ -6,10 +6,10 @@
                     <li><a href="{% url 'home' %}"><i class="zmdi zmdi-home"></i></a></li>
                     <li><a href="{% url 'home' %}">Home</a>
                     </li>
+                    <li><a href="{% url 'leads:lead-list' %}">Leads</a></li>
                     {% if request.user.is_organization %}
-                        <li><a href="{% url 'leads:lead-list' %}">Leads</a></li>
+                        <li><a href="{% url 'agents:agent-list' %}">Agents</a></li>
                     {% endif %}
-                    <li><a href="{% url 'agents:agent-list' %}">Agents</a></li>
                     <li><a href="javascript:void(0)">Contact</a></li>
                 </ul>
             </div>

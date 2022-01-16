@@ -30,7 +30,9 @@
             </div>
         {% endif %}
         <div class="row clearfix">
-            <a class="badge badge-info pull-right" href="{% url 'leads:lead-create' %}">Create New Lead</a>
+            {% if request.user.is_organizer %}
+                <a class="badge badge-info pull-right" href="{% url 'leads:lead-create' %}">Create New Lead</a>
+            {% endif %}
             <div class="col-lg-12 col-md-12">
                 <div class="card">
                     <div class="body project_report">
@@ -42,14 +44,21 @@
                                     <th>Lead</th>
                                     <th>Age</th>
                                     <th>Agent</th>
-                                    <th>Action</th>
+                                    <th>Organization</th>
+                                    {% if request.user.is_organization %}
+                                        <th>Action</th>
+                                    {% endif %}
                                 </tr>
                                 </thead>
                                 <tbody>
                                 {% for lead in leads %}
                                     <tr>
                                         <td>
-                                            <span class="badge badge-success">Active</span>
+                                            {% if lead.agent %}
+                                                <span class="badge badge-success">Active</span>
+                                            {% else %}
+                                                <span class="badge badge-danger">In-Active</span>
+                                            {% endif %}
                                         </td>
                                         <td class="project-title">
                                             <h6>
@@ -63,16 +72,19 @@
                                         <td>
                                             {{ lead.agent }}
                                         </td>
-                                        <td class="project-actions">
-                                            <a href="{% url 'leads:lead-details' lead.id %}"
-                                               class="btn btn-neutral btn-sm"><i class="zmdi zmdi-eye"></i></a>
-                                            <a href="{% url 'leads:lead-update' lead.id %}"
-                                               class="btn btn-neutral btn-sm"><i
-                                                    class="zmdi zmdi-edit"></i></a>
-                                            <a href="{% url 'leads:lead-delete' lead.id %}"
-                                               class="btn btn-neutral btn-sm"><i class="zmdi zmdi-delete"></i></a>
+                                        <td>{{ lead.organization }}</td>
+                                        {% if request.user.is_organization %}
+                                            <td class="project-actions">
+                                                <a href="{% url 'leads:lead-details' lead.id %}"
+                                                   class="btn btn-neutral btn-sm"><i class="zmdi zmdi-eye"></i></a>
+                                                <a href="{% url 'leads:lead-update' lead.id %}"
+                                                   class="btn btn-neutral btn-sm"><i
+                                                        class="zmdi zmdi-edit"></i></a>
+                                                <a href="{% url 'leads:lead-delete' lead.id %}"
+                                                   class="btn btn-neutral btn-sm"><i class="zmdi zmdi-delete"></i></a>
 
-                                        </td>
+                                            </td>
+                                        {% endif %}
                                     </tr>
                                 {% endfor %}
                                 </tbody>
